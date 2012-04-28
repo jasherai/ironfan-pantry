@@ -114,11 +114,14 @@ action :build_with_make do
   new_resource.updated_by_last_action(true)
 end
 
+# Create a symlink from the bin dir (default /usr/local/bin) to the actual binary.
+# Only do this if a file doesn't already exist as some packages (redis...) install there directly.
 action :install_binaries do
   new_resource.has_binaries.each do |bin|
     link ::File.join(new_resource.prefix_root, 'bin', ::File.basename(bin)) do
       to        ::File.join(new_resource.home_dir, bin)
       action    :create
+      not_if    "test !-e #{::File.join(new_resource.prefix_root, 'bin', ::File.basename(bin))}"
     end
   end
   new_resource.updated_by_last_action(true)
