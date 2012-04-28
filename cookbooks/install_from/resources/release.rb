@@ -99,6 +99,7 @@ def assume_defaults!
   @release_ext      ||= $2
 
   @home_dir         ||= ::File.join(prefix_root, 'share', name)
+  @bin_dir          ||= ::File.join(prefix_root, 'bin')
   @install_dir      ||= ::File.join(prefix_root, 'share', "#{name}-#{version}")
   @release_file     ||= ::File.join(prefix_root, 'src',   "#{name}-#{version}.#{release_ext}")
   @expand_cmd ||=
