@@ -39,6 +39,10 @@ standard_dirs('resque') do
   directories :home_dir, :log_dir, :tmp_dir, :data_dir, :journal_dir, :conf_dir
 end
 
+standard_dirs('resque.dashboard') do
+  directories :data_dir
+end
+
 #
 # Config
 #
@@ -54,9 +58,13 @@ end
 # Daemonize
 #
 
+node.set[:resque][:dashboard][:bindir] = %x[echo -n $(dirname `which resque-web`)]
+node.set[:resque][:dashboard][:bindir] = '/opt/ruby/bin'
+
 runit_service 'resque_dashboard' do
   run_state     node[:resque][:dashboard][:run_state]
   options       node[:resque]
+  env           Hash.new().merge('HOME' => '/var/log/resque', 'PATH' => "#{node[:resque][:dashboard][:bindir]}:$PATH" )
 end
 
 announce(:resque, :dashboard, :port => node[:resque][:dashboard_port])

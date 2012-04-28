@@ -24,6 +24,7 @@ default[:resque][:namespace]            = node[:cluster_name]
 default[:resque][:redis][:server][:addr] = '0.0.0.0'
 default[:resque][:redis][:server][:port] = '6388'
 default[:resque][:dashboard][:port]      = '6389'
+default[:resque][:dashboard][:data_dir]  = '/data/db/resque/dashboard_data'
 
 default[:resque][:redis    ][:run_state] = :start
 default[:resque][:dashboard][:run_state] = :start
